@@ -1,0 +1,34 @@
+{% comment %} Thumbnail selectors {% endcomment %} 
+<div class="col-sm-1 hidden-xs hidden-sm" id="ProductThumbs">
+    {% for image in product.images %} {% assign image_filter_pre = image.alt | escape | downcase | strip | split: '-' %} {% for word in image_filter_pre %} {% assign image_filter = word %} {% assign image_filter = image_filter | replace: ',', '' %} {% assign image_filter = image_filter | replace: "'", '' %} {% endfor %} {% assign title_filter_pre = variant.name | escape | downcase | strip | split: '-' %} {% for word in title_filter_pre %} {% assign title_filter = word %} {% assign title_filter = title_filter | replace: ',', '' %} {% assign title_filter = title_filter | replace: "'", '' %} {% endfor %}
+
+    <a onclick="goToSlickImage($(this),{{ image.id }})" {% if image_filter !=t itle_filter and image_filter !="all" %}style="display:none" {% endif %} class="static imgswitcher filter-{{ image_filter }} " data-link="{{ image.src | img_url: 'master' }}">
+        <div class="product-thumbnail">
+
+            <div class="product-thumbnail__wrapper">
+                <img class="product-thumbnail__image" src="{{ image.src | img_url: 'small' }}" {% if settings.product_zoom_enable %}data-mfp-src="{{ image.src | img_url: '1024x1024' }}" {% endif %} alt="{{ image.alt | escape }}" data-image-id="{{ image.id }}">
+            </div>
+        </div>
+    </a>
+    {% endfor %}
+</div>
+
+
+{% comment %} Main picture area {% endcomment %} 
+<div class="product-single text-center">
+
+    {% for image in product.images %} {% assign image_filter_pre = image.alt | escape | downcase | strip | split: '-' %} {% for word in image_filter_pre %} {% assign image_filter = word %} {% assign image_filter = image_filter | replace: ',', '' %} {% assign image_filter = image_filter | replace: "'", '' %} {% endfor %} {% assign title_filter_pre = variant.name | escape | downcase | strip | split: '-' %} {% for word in title_filter_pre %} {% assign title_filter = word %} {% assign title_filter = title_filter | replace: ',', '' %} {% assign title_filter = title_filter | replace: "'", '' %} {% endfor %}
+    <picture id="{{ image.id }}" class="filter-{{ image_filter }} product-thumbnail-image">
+
+        <source media="(min-width: 992px)" srcset="{{ image.src | img_url: 'x750', format: 'pjpg' }}">
+        <source media="(min-width: 650px)" srcset="{{ image.src | img_url: 'grande', format: 'pjpg' }}">
+        <source media="(min-width: 465px)" srcset="{{ image.src | img_url: 'large', format: 'pjpg' }}">
+        <source media="(min-width: 360px)" srcset="{{ image.src | img_url: 'large', format: 'pjpg' }}">
+
+        <img src="{{ image.src | img_url: 'original', format: 'pjpg' }}" data-image-id="{{ image.id }}" />
+
+    </picture>
+
+    {% endfor %}
+
+</div>
